@@ -91,8 +91,36 @@ public final class CppFileTypes {
         }
       };
 
-  public static final FileType ASSEMBLER_WITH_C_PREPROCESSOR = FileType.of(".S");
-  public static final FileType PIC_ASSEMBLER = FileType.of(".pic.s");
+  public static final FileType ASSEMBLER_WITH_C_PREPROCESSOR =
+      new FileType() {
+        final String ext = ".S";
+
+        @Override
+        public boolean apply(String path) {
+          return path.endsWith(ext);
+        }
+
+        @Override
+        public ImmutableList<String> getExtensions() {
+          return ImmutableList.of(ext);
+        }
+      };
+
+  public static final FileType PIC_ASSEMBLER =
+      new FileType() {
+        final String ext = ".pic.s";
+
+        @Override
+        public boolean apply(String path) {
+          return OS.endsWith(path, ext) && path.endsWith(".s");
+        }
+
+        @Override
+        public ImmutableList<String> getExtensions() {
+          return ImmutableList.of(ext);
+        }
+      };
+
   public static final FileType ASSEMBLER =
       new FileType() {
         final String ext = ".s";
@@ -100,7 +128,7 @@ public final class CppFileTypes {
         @Override
         public boolean apply(String path) {
           return (path.endsWith(ext) && !PIC_ASSEMBLER.matches(path))
-              || path.endsWith(".asm");
+              || OS.endsWith(path, ".asm");
         }
 
         @Override
