@@ -99,8 +99,8 @@ public final class CppFileTypes {
 
         @Override
         public boolean apply(String path) {
-          return (OS.endsWith(path, ext) && !PIC_ASSEMBLER.matches(path))
-              || OS.endsWith(path, ".asm");
+          return (path.endsWith(ext) && !PIC_ASSEMBLER.matches(path))
+              || path.endsWith(".asm");
         }
 
         @Override
