@@ -1291,6 +1291,11 @@ public class RemoteExecutionService {
     if (result.getExitCode() != 0) {
       return true;
     }
+    // An output materialized as a symlink might point to one of the other outputs.
+    if (!result.getOutputSymlinks().isEmpty() || !result.getOutputFileSymlinks().isEmpty()
+        || !result.getOutputDirectorySymlinks().isEmpty()) {
+      return true;
+    }
     return remoteOutputChecker.shouldDownloadOutput(execPath);
   }
 
